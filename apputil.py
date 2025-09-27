@@ -22,6 +22,8 @@ def survival_demographics():
         [["PassengerId", "Survived"]].agg({"PassengerId": "count", "Survived": "sum"})\
               .rename(columns ={"PassengerId": "n_passengers", "Survived": "n_survived"}).\
                 reset_index()
+    data_grouped["Pclass"] = data_grouped["Pclass"].astype("category")
+    
     #Calculate the survival rate 
     #One question here: in R I can use dplyr's mutate to create new variables 
     #so it can stay all piped in togther, is there something similar for python? 

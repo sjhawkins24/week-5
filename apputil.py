@@ -90,6 +90,7 @@ def family_groups():
                                         sort_values(by = ["class", "family_size"])
     return(grouped_data)
 def last_names():
+    """Function to generate family data, but by last name """
      #Start by reading in the data 
     data = pd.read_csv('https://raw.githubusercontent.com/leontoddjohnson/datasets/main/data/titanic.csv')
     #Now we are getting the last name and counting the frequency 
@@ -100,5 +101,25 @@ def last_names():
                 sort_values("family_count")
 
 
+def visualize_families():
+    """Function to generate the vizualization for exercise two"""
+    data = family_groups()
+    fig = px.histogram(grouped_data,  
+             y='family_size',
+             x='class',
+             histfunc='avg',
+             #hover_data=['Name'],
+             template='plotly_white',
+             nbins= 3,
+             color_discrete_sequence=px.colors.qualitative.D3
+            )
+    fig.update_xaxes(type='category')
+    fig.update_layout(
+    xaxis_title="Size of Family",
+    yaxis_title="Class",
+    title_text = "Family Size by Class"
+     
+    )
+    return(fig)
 
 

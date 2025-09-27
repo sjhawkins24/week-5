@@ -103,7 +103,7 @@ def last_names():
 def visualize_families():
     """Function to generate the vizualization for exercise two"""
     data = family_groups()
-    fig = px.histogram(grouped_data,  
+    fig = px.histogram(data,  
              y='family_size',
              x='class',
              histfunc='avg',

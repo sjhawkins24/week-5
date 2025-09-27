@@ -95,10 +95,9 @@ def last_names():
     data = pd.read_csv('https://raw.githubusercontent.com/leontoddjohnson/datasets/main/data/titanic.csv')
     #Now we are getting the last name and counting the frequency 
     data[["last_name", "first_name"]] = data["Name"].str.split(",", expand = True)
-    data.groupby(["last_name"])["last_name"].\
-    count().\
-            rename(columns = {"last_name": "family_count"}).\
-                sort_values("family_count")
+    grouped_data = data.groupby(["last_name"])["last_name"].\
+    count().sort_values()
+    return(grouped_data)
 
 
 def visualize_families():

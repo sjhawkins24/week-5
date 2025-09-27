@@ -1,7 +1,7 @@
 import plotly.express as px
 import pandas as pd
 
-# update/add code below ...
+# Exercise 1 Functions
 def survivial_demographics():
     """Function that returns survival data by age and gender for the titanic data set
     """
@@ -66,4 +66,39 @@ def visualize_demographic():
         )
         )
     return(fig)
+
+#Exercise 2 Functions 
+
+def family_groups():
+    """function to generate the data on family size"""
+     #Start by reading in the data 
+    data = pd.read_csv('https://raw.githubusercontent.com/leontoddjohnson/datasets/main/data/titanic.csv')
+    #Creating a new column for family size 
+    data["family_size"] = data["SibSp"]  + data["Parch"] + 1
+    #Grouping 
+    grouped_data = data.groupby(["family_size", "Pclass"])\
+        [["PassengerId", "Fare"]].agg({"PassengerId": "count", "Fare": ["mean", "min", "max"] })\
+        .reset_index()
+    grouped_data.columns = ['_'.join(col).strip() for col in grouped_data.columns.values]
+
+    grouped_data = grouped_data.rename(columns ={"family_size_": "family_size",\
+                               "Pclass_": "class", \
+                                "PassengerId_count": "n_passengers",\
+                                "Fare_mean": "avg_fare", \
+                                "Fare_min": "min_fare", \
+                                "Fare_max": "max_fare" }).\
+                                        sort_values(by = ["class", "family_size"])
+    return(grouped_data)
+def last_names():
+     #Start by reading in the data 
+    data = pd.read_csv('https://raw.githubusercontent.com/leontoddjohnson/datasets/main/data/titanic.csv')
+    #Now we are getting the last name and counting the frequency 
+    data[["last_name", "first_name"]] = data["Name"].str.split(",", expand = True)
+    data.groupby(["last_name"])["last_name"].\
+    count().\
+            rename(columns = {"last_name": "family_count"}).\
+                sort_values("family_count")
+
+
+
 

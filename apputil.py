@@ -2,7 +2,7 @@ import plotly.express as px
 import pandas as pd
 
 # Exercise 1 Functions
-def survivial_demographics():
+def survival_demographics():
     """Function that returns survival data by age and gender for the titanic data set
     """
     #Start by reading in the data 

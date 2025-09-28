@@ -12,13 +12,14 @@ def survival_demographics():
     max_age = data["Age"].max()
     bins = [0,12, 19, 59, max_age]
     labels = ["Child", "Teen", "Adult", "Senior"]
-    data["age_cat"] = pd.cut(data["Age"],\
+    data["age_group"] = pd.cut(data["Age"],\
                               bins = bins,\
                                   labels = labels, \
                                     right = True,\
                                           include_lowest = True)
+    data["age_group"] = data["age_group"].astype("category")
     #Grouping the data 
-    data_grouped = data.groupby(["Pclass", "Sex", "age_cat"]) \
+    data_grouped = data.groupby(["Pclass", "Sex", "age_group"]) \
         [["PassengerId", "Survived"]].agg({"PassengerId": "count", "Survived": "sum"})\
               .rename(columns ={"PassengerId": "n_passengers", "Survived": "n_survived"}).\
                 reset_index()
@@ -37,11 +38,11 @@ def visualize_demographic():
     """Function to generate visualization comparing the survivial rate of 
     women and children by class """
     #Start by getting the data from the first half of the exercise 
-    data_grouped = survivial_demographics()
+    data_grouped = survival_demographics()
     #Then clean the data a little bit. I want all female passengers and child passengers 
     #to be in one category and all male, non child passengers to be another category 
     #Create the new variable 
-    data_grouped["woman_child"] = (data_grouped["Sex"] == "female") | (data_grouped["age_cat"] == "Child")
+    data_grouped["woman_child"] = (data_grouped["Sex"] == "female") | (data_grouped["age_group"] == "Child")
     #Re-group the data 
     data_regrouped = data_grouped.groupby(["Pclass", "woman_child"])\
         [["n_passengers", "n_survived"]].agg({"n_passengers": "sum", "n_survived": "sum"})\
